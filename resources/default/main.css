@@ -116,12 +116,12 @@ body {
 }
 
 #sidebar-middle .box-middle {
-    width: 358px;
+    width: 343px;
     height: 535px;
     background: url('main_middle.png') left top repeat-y;
     color: #927e6c;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 15px;
+    padding-right: 20px;
     font-size: 12px;
 }
 
@@ -147,4 +147,21 @@ body {
 
 .copyright a:hover {
     text-decoration: underline;
+}
+
+/* Plugins */
+.news-title {
+    font-size: 14px;
+    width: 80%;
+    display: block;
+    border-bottom: 1px solid #252525;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+}
+
+.news-footer {
+    text-align: right;
+    font-size: 10px;
+    display: block;
+    font-weight: normal;
 }

@@ -17,6 +17,8 @@
 
 namespace plugins\mt2base;
 
+use system\SystemException;
+
 class NewsHandler {
 
     /**
@@ -34,7 +36,12 @@ class NewsHandler {
     }
 
     public function readNews($start, $count) {
-        
+        if($this->loadType == "intern") {
+            $news = \system\Core::$instance->getSql("homepage")->select("news", array("title", "content", "date", "author"));
+            return $news;
+        } else {
+            throw new SystemException("Unsupported news load type " . $this->loadType);
+        }
     }
 
 }

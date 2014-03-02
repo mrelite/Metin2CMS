@@ -165,6 +165,21 @@ class Core {
     }
 
     /**
+     * Get a database connection for the usage
+     *
+     * @param $usage string
+     * @return MySQLDatabase
+     * @throws SystemException
+     */
+    public function getSql($usage) {
+        if(!empty($this->databases[$usage])) {
+            return $this->databases[$usage];
+        }
+
+        throw new SystemException("Unknown sql connection for " . $usage);
+    }
+
+    /**
      * Register a page
      *
      * @param $pages array

@@ -67,4 +67,72 @@ class MySQLDatabase {
         }
     }
 
+    /**
+     * Create a select query and run this
+     *
+     * @param $table string table name
+     * @param $fields array fields to select
+     * @param string $where where clause
+     * @param string $limit limit expression
+     * @param string $order order
+     * @return array
+     */
+    public function select($table, $fields, $where = "", $limit = "", $order = "") {
+        $sql = "SELECT ";
+        // add fields
+        foreach($fields as $field) {
+            $sql .= "`" . $field . "`, ";
+        }
+        $sql = substr($sql, 0, -2);
+
+        // add table name
+        $sql .= " FROM `" . $table . "`";
+
+        // add where clause
+        if(!empty($where)) {
+            $sql .= " WHERE " . $where;
+        }
+
+        // add limit clause
+        if(!empty($limit)) {
+            $sql .= " LIMIT " . $limit;
+        }
+
+        // add order clause
+        if(!empty($order)) {
+            $sql .= " ORDER BY " . $order;
+        }
+
+        $result = $this->query($sql);
+        return $this->createArray($result);
+    }
+
+    /**
+     * Run a sql query
+     *
+     * @param $sql string query
+     * @return bool|\mysqli_result
+     * @throws SQLException
+     */
+    private function query($sql) {
+        $result = $this->mysqli->query($sql);
+        if($result === false) {
+            throw new SQLException("SQL Error " . $this->mysqli->error);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Create from a result an associative array
+     *
+     * @param $result \mysqli_result
+     * @return array
+     */
+    private function createArray($result) {
+        $array = $result->fetch_all(MYSQL_BOTH);
+        $result->free();
+        return $array;
+    }
+
 }

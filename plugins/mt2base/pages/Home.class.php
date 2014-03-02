@@ -38,7 +38,9 @@ class Home implements \system\pages\Page {
      */
     public function prepare($core, $smarty)
     {
-        // TODO: Implement prepare() method.
+        $newsHandler = new \plugins\mt2base\NewsHandler();
+        $news = $newsHandler->readNews(0, 10);
+        $smarty->assign("news", $news);
     }
 
 }
