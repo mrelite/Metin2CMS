@@ -40,7 +40,12 @@ class Core {
     /**
      * @var array
      */
-    private $config;
+    private $configm = array();
+
+    /**
+     * @var \Smarty
+     */
+    private $smarty;
 
     /**
      * @var Core
@@ -66,7 +71,23 @@ class Core {
         $this->initExceptionHandler();
 
         // Loading configuration
-        $this->config = $this->loadConfig();
+        $this->loadConfig();
+
+        // Setup Smarty
+        $this->initSmarty();
+    }
+
+    /**
+     * Handle user input and display the template
+     */
+    public function view() {
+        // Define design related variables
+        $this->smarty->assign("resource_dir", "resources/" . $this->getDesign() . "/");
+
+        // Define config
+        $this->smarty->assign("config", $this->config);
+
+        $this->smarty->display("main.tpl");
     }
 
     /**
@@ -76,6 +97,13 @@ class Core {
      */
     public function isDebug() {
         return array_key_exists("general_debug", $this->config) ? $this->config["general_debug"] : false;
+    }
+
+    public function getDesign() {
+        if(!empty($this->config["general_design"])) {
+            return $this->config["general_design"];
+        }
+        return "default";
     }
 
     /**
@@ -99,8 +127,21 @@ class Core {
         }
     }
 
+    /**
+     * Create a exception handler
+     */
     private function initExceptionHandler() {
         $this->exceptionHandler = new ExceptionHandler();
+    }
+
+    private function initSmarty() {
+        require(ROOT_DIR . "libs" . DS . "smarty" . DS . "Smarty.class.php");
+
+        $this->smarty = new \Smarty();
+        $this->smarty->setTemplateDir(ROOT_DIR . "templates" . DS . $this->getDesign() . DS);
+        $this->smarty->setCompileDir(ROOT_DIR . "templates" . DS . "compiled" . DS);
+        $this->smarty->debugging = $this->isDebug();
+        $this->smarty->caching = false;
     }
 
     /**
@@ -115,7 +156,6 @@ class Core {
     /**
      * Load the configuration
      *
-     * @return array
      * @throws SystemException
      */
     private function loadConfig() {
@@ -192,8 +232,6 @@ class Core {
             }
             $this->databases[$usage] = new $sql_handler($data["host"], $data["user"], $data["password"], $data["database"]);
         }
-
-        return array();
     }
 
 }

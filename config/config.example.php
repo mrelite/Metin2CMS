@@ -24,5 +24,11 @@ $MySQL["player"]["user"] = "root";
 $MySQL["player"]["password"] = "";
 $MySQL["player"]["database"] = "player_server_x";
 
-// comment out this to activate debug
+// comment out this to activate debug. Attention! If debug mode is true it is possible to see the mysql password if connection failed
 // $GENERAL["debug"] = true;
+
+// Design directory name
+$GENERAL["design"] = "default";
+
+// Servername
+$GENERAL["name"] = "ExampleMt2";

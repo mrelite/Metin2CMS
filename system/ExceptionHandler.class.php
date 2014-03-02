@@ -85,7 +85,7 @@ class ExceptionHandler {
 
                 ($step['class']) ? $class = $step['class'] . '::' . $step['function'] : $class = $step['function'];
 
-                if(strpos($step['class'], "database") !== false || !Core::$instance->isDebug()) {
+                if(!Core::$instance->isDebug()) {
                     $class .= '(***censored***)';
                 } else {
                     $class .= '(';

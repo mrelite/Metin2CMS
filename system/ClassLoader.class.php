@@ -38,7 +38,8 @@ class ClassLoader {
      * @throws \Exception
      */
     public function load($name) {
-        if(class_exists($name)) {
+        // Cancel if class already loaded and ignore smarty classes
+        if(class_exists($name) || strpos($name, "Smarty") !== false) {
             return;
         }
         $path = $this->getFilePath($name);

@@ -20,3 +20,4 @@ error_reporting(E_ERROR);
 require("system" . DIRECTORY_SEPARATOR . "Core.class.php");
 
 $core = new \system\Core();
+$core->view();
