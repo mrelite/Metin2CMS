@@ -22,9 +22,9 @@ class SystemException extends \Exception {
     /**
      * Create a SystemException
      *
-     * @param $message exception message
-     * @param int $core defined exception code
-     * @param \Exception $previous previous exception if nested exception
+     * @param $message string exception message
+     * @param $core int defined exception code
+     * @param $previous \Exception previous exception if nested exception
      */
     public function __construct($message, $core = 0, \Exception $previous = null) {
         parent::__construct($message, $core, $previous);

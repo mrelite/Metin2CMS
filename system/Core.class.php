@@ -25,13 +25,16 @@ class Core {
      * @var array
      * @example Array ( "account" => database\MySQLDatabase("account_metin") )
      */
-    private $databases;
+    private $databases = array();
 
     /**
      * @var ClassLoader
      */
     private $classLoader;
 
+    /**
+     * @var array
+     */
     private $config;
 
     /**
@@ -82,9 +85,81 @@ class Core {
 
     /**
      * Load the configuration
+     *
+     * @return array
+     * @throws SystemException
      */
     private function loadConfig() {
+        $MySQL = array();
+        $tmpMySQL = array();
+        if(!file_exists(ROOT_DIR . "config" . DS . "config.php")) {
+            exit("config.php is missing, please copy config.example.php and change this");
+        }
+        require(ROOT_DIR . "config" . DS . "config.php");
 
+        foreach($MySQL as $usage => $data) {
+            if($usage == "*") {
+                foreach($data as $key => $value) {
+                    $tmpMySQL["account"][$key] = $value;
+                }
+                foreach($data as $key => $value) {
+                    $tmpMySQL["player"][$key] = $value;
+                }
+                foreach($data as $key => $value) {
+                    $tmpMySQL["common"][$key] = $value;
+                }
+                foreach($data as $key => $value) {
+                    $tmpMySQL["log"][$key] = $value;
+                }
+                foreach($data as $key => $value) {
+                    $tmpMySQL["homepage"][$key] = $value;
+                }
+
+                // Update database name
+                if(strpos($data["database"], "%usage%") !== false) {
+                    // Replace %usage%
+                    $tmpMySQL["account"]["database"] = str_replace("%usage%", "account", $tmpMySQL["account"]["database"]);
+                    $tmpMySQL["player"]["database"] = str_replace("%usage%", "player", $tmpMySQL["player"]["database"]);
+                    $tmpMySQL["common"]["database"] = str_replace("%usage%", "common", $tmpMySQL["common"]["database"]);
+                    $tmpMySQL["log"]["database"] = str_replace("%usage%", "log", $tmpMySQL["log"]["database"]);
+                    $tmpMySQL["homepage"]["database"] = str_replace("%usage%", "homepage", $tmpMySQL["homepage"]["database"]);
+                }
+            } else if(strpos($usage, "|") !== false) {
+                $usages = explode("|" , $usage);
+                foreach($usages as $toSetUsage) {
+                    foreach($data as $key => $value) {
+                        $tmpMySQL[$toSetUsage][$key] = $value;
+                    }
+                    if(strpos($data["database"], "%usage%") !== false) {
+                        $tmpMySQL[$toSetUsage]["database"] = str_replace("%usage%", $toSetUsage, $tmpMySQL[$toSetUsage]["database"]);
+                    }
+                }
+            } else {
+                foreach($data as $key => $value) {
+                    $tmpMySQL[$usage][$key] = $value;
+                }
+                if(strpos($data["database"], "%usage%") !== false) {
+                    $tmpMySQL[$usage]["database"] = str_replace("%usage%", $usage, $tmpMySQL[$usage]["database"]);
+                }
+            }
+        }
+
+        // Create mysql connections
+        foreach($tmpMySQL as $usage => $data) {
+            if($usage != "account" && $usage != "player" && $usage != "common" && $usage != "log" && $usage != "homepage") {
+                throw new SystemException("Failed to load config.php - invaild mysql usage " . $usage);
+            }
+
+            // Allow to define another sql connection class
+            if(!empty($data["type"])) {
+                $sql_handler = "system\\database\\" . $data["type"];
+            } else {
+                $sql_handler = "system\\database\\MySQLDatabase";
+            }
+            $this->databases[$usage] = new $sql_handler($data["host"], $data["user"], $data["password"], $data["database"]);
+        }
+
+        return array();
     }
 
 }

@@ -59,7 +59,7 @@ class MySQLDatabase {
         $this->database = $database;
 
         // Creating mysqli connection
-        $this->mysqli = new \mysqli($this->host, $this->username, $this->password, $this->database);
+        $this->mysqli = new \mysqli($this->host, $this->username, $password, $this->database);
 
         // Checking connection (No object style because of PHP bug in 5.2.9 and 5.3.0)
         if(mysqli_connect_error()) {
