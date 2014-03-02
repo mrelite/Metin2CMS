@@ -92,16 +92,21 @@ class Core {
 
         // Initialize page
         $pageClassName = "\\system\\pages\\" . $this->getCurrentPage();
+        Logger::verbose("Create a instance of " . $pageClassName);
         $page = new $pageClassName();
         if($page instanceof pages\Page) {
+            Logger::verbose("Prepare the page");
             $page->prepare($this, $this->smarty);
 
             $this->smarty->assign("page_tpl", $page->getTemplateName());
 
+            Logger::verbose("Displaying template");
             $this->smarty->display("main.tpl");
         } else {
             throw new SystemException("Error in page " . $this->getCurrentPage() . "! The class must be an instanceof Page");
         }
+
+        Logger::close();
     }
 
     /**
@@ -122,6 +127,8 @@ class Core {
         if(array_key_exists($_GET, "p") && !empty($_GET["p"])) {
             if(file_exists(SYSTEM_DIR . "pages" . DS . $_GET["p"] . ".class.php")) {
                 return $_GET["p"];
+            } else {
+                Logger::warning("Unknown page " . $_GET["p"]);
             }
         }
 

@@ -37,6 +37,13 @@ class Logger {
     private static $file;
 
     /**
+     * Count the added messages in this session
+     *
+     * @var int
+     */
+    private static $count;
+
+    /**
      * Rotate all logs and open the current file
      *
      * @param int $logLevel The log level
@@ -60,6 +67,9 @@ class Logger {
     }
 
     public static function close() {
+        if(Logger::$count > 0) {
+            fwrite(Logger::$file, "-----------------------------------------------------" . PHP_EOL);
+        }
         fclose(Logger::$file);
     }
 
@@ -85,6 +95,8 @@ class Logger {
     }
 
     private static function writeLog($message) {
+        Logger::$count++;
+
         $prefix = "[" . $_SERVER["REMOTE_ADDR"] . "]" . "[" . date("H:i:s") . "]";
         fwrite(Logger::$file, $prefix . $message . PHP_EOL);
     }

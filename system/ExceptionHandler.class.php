@@ -28,6 +28,9 @@ class ExceptionHandler {
      * Create an exception handler
      */
     public function __construct() {
+        if(!is_dir(ROOT_DIR . "exceptions")) {
+            mkdir(ROOT_DIR . "exceptions" . DS, 0777);
+        }
         set_exception_handler(array($this, 'handleException'));
     }
 
@@ -38,9 +41,16 @@ class ExceptionHandler {
      */
     public function handleException(\Exception $exception) {
 
-        Logger::error("Exception " . $this->exception->getMessage() . " in file " . $this->exception->getFile() . " on line " . $this->exception->getLine());
-
         $this->exception = $exception;
+
+        // Get Exception number
+        $exceptions = glob(ROOT_DIR . "exceptions" . DS . "*.html");
+        $counter = ((count($exceptions)) + 1);
+        $salt = Utils::generateRandomString(25);
+
+        $file = fopen(ROOT_DIR . "exceptions" . DS . $counter . "_" . $salt . ".html", "a+");
+
+        Logger::error("(" . $counter . ") Exception " . $this->exception->getMessage() . " in file " . $this->exception->getFile() . " on line " . $this->exception->getLine());
 
         $code = '
                 <html>
@@ -62,6 +72,9 @@ class ExceptionHandler {
                 ';
 
         echo $code;
+
+        fwrite($file, $code);
+        fclose($file);
     }
 
     /**
