@@ -23,3 +23,6 @@ $MySQL["player"]["host"] = "1.1.1.1";
 $MySQL["player"]["user"] = "root";
 $MySQL["player"]["password"] = "";
 $MySQL["player"]["database"] = "player_server_x";
+
+// comment out this to activate debug
+// $GENERAL["debug"] = true;

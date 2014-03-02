@@ -33,9 +33,19 @@ class Core {
     private $classLoader;
 
     /**
+     * @var ExceptionHandler
+     */
+    private $exceptionHandler;
+
+    /**
      * @var array
      */
     private $config;
+
+    /**
+     * @var Core
+     */
+    public static $instance;
 
     /**
      * Creates the core which setup everything.
@@ -43,14 +53,29 @@ class Core {
      * @throws SystemException, SQLException
      */
     public function __construct() {
+        // Set this instance
+        Core::$instance = $this;
+
         // Initialize defines
         $this->initDefines();
 
         // Setup class loader
         $this->initClassLoader();
 
+        // Setup exception handler
+        $this->initExceptionHandler();
+
         // Loading configuration
         $this->config = $this->loadConfig();
+    }
+
+    /**
+     * Return if the system is in debug mode
+     *
+     * @return bool
+     */
+    public function isDebug() {
+        return array_key_exists("general_debug", $this->config) ? $this->config["general_debug"] : false;
     }
 
     /**
@@ -74,6 +99,10 @@ class Core {
         }
     }
 
+    private function initExceptionHandler() {
+        $this->exceptionHandler = new ExceptionHandler();
+    }
+
     /**
      * Create a class loader instance to work without include / require
      */
@@ -91,11 +120,16 @@ class Core {
      */
     private function loadConfig() {
         $MySQL = array();
+        $GENERAL = array();
         $tmpMySQL = array();
         if(!file_exists(ROOT_DIR . "config" . DS . "config.php")) {
             exit("config.php is missing, please copy config.example.php and change this");
         }
         require(ROOT_DIR . "config" . DS . "config.php");
+
+        foreach($GENERAL as $key => $value) {
+            $this->config["general_" . $key] = $value;
+        }
 
         foreach($MySQL as $usage => $data) {
             if($usage == "*") {
@@ -147,7 +181,7 @@ class Core {
         // Create mysql connections
         foreach($tmpMySQL as $usage => $data) {
             if($usage != "account" && $usage != "player" && $usage != "common" && $usage != "log" && $usage != "homepage") {
-                throw new SystemException("Failed to load config.php - invaild mysql usage " . $usage);
+                throw new SystemException("Failed to load config.php - invalid mysql usage " . $usage);
             }
 
             // Allow to define another sql connection class

@@ -15,6 +15,8 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 
+error_reporting(E_ERROR);
+
 require("system" . DIRECTORY_SEPARATOR . "Core.class.php");
 
 $core = new \system\Core();
