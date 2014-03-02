@@ -40,7 +40,7 @@ class Core {
     /**
      * @var array
      */
-    private $configm = array();
+    private $config = array();
 
     /**
      * @var \Smarty
@@ -87,7 +87,18 @@ class Core {
         // Define config
         $this->smarty->assign("config", $this->config);
 
-        $this->smarty->display("main.tpl");
+        // Initialize page
+        $pageClassName = "\\system\\pages\\" . $this->getCurrentPage();
+        $page = new $pageClassName();
+        if($page instanceof pages\Page) {
+            $page->prepare($this, $this->smarty);
+
+            $this->smarty->assign("page_tpl", $page->getTemplateName());
+
+            $this->smarty->display("main.tpl");
+        } else {
+            throw new SystemException("Error in page " . $this->getCurrentPage() . "! The class must be an instanceof Page");
+        }
     }
 
     /**
@@ -99,6 +110,26 @@ class Core {
         return array_key_exists("general_debug", $this->config) ? $this->config["general_debug"] : false;
     }
 
+    /**
+     * Gets the current page name
+     *
+     * @return string
+     */
+    public function getCurrentPage() {
+        if(array_key_exists($_GET, "p") && !empty($_GET["p"])) {
+            if(file_exists(SYSTEM_DIR . "pages" . DS . $_GET["p"] . ".class.php")) {
+                return $_GET["p"];
+            }
+        }
+
+        return "Home";
+    }
+
+    /**
+     * Get the choosen design
+     *
+     * @return string
+     */
     public function getDesign() {
         if(!empty($this->config["general_design"])) {
             return $this->config["general_design"];
@@ -134,6 +165,9 @@ class Core {
         $this->exceptionHandler = new ExceptionHandler();
     }
 
+    /**
+     * Initialize Smarty
+     */
     private function initSmarty() {
         require(ROOT_DIR . "libs" . DS . "smarty" . DS . "Smarty.class.php");
 
