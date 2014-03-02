@@ -15,6 +15,19 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 
-require("system" . DIRECTORY_SEPARATOR . "Core.class.php");
+namespace system;
 
-$core = new \system\Core();
+class SystemException extends \Exception {
+
+    /**
+     * Create a SystemException
+     *
+     * @param $message exception message
+     * @param int $core defined exception code
+     * @param \Exception $previous previous exception if nested exception
+     */
+    public function __construct($message, $core = 0, \Exception $previous = null) {
+        parent::__construct($message, $core, $previous);
+    }
+
+}
