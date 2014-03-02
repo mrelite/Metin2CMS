@@ -38,6 +38,8 @@ class ExceptionHandler {
      */
     public function handleException(\Exception $exception) {
 
+        Logger::error("Exception " . $this->exception->getMessage() . " in file " . $this->exception->getFile() . " on line " . $this->exception->getLine());
+
         $this->exception = $exception;
 
         $code = '

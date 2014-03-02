@@ -67,6 +67,9 @@ class Core {
         // Setup class loader
         $this->initClassLoader();
 
+        // Setup the logger
+        $this->initLogger();
+
         // Setup exception handler
         $this->initExceptionHandler();
 
@@ -188,15 +191,25 @@ class Core {
     }
 
     /**
+     * Initialize the logger
+     */
+    private function initLogger() {
+        Logger::init(0);
+    }
+
+    /**
      * Load the configuration
      *
      * @throws SystemException
      */
     private function loadConfig() {
+        Logger::verbose("Loading configuration");
+
         $MySQL = array();
         $GENERAL = array();
         $tmpMySQL = array();
         if(!file_exists(ROOT_DIR . "config" . DS . "config.php")) {
+            Logger::error("config.php is missing, please copy config.example.php and change this");
             exit("config.php is missing, please copy config.example.php and change this");
         }
         require(ROOT_DIR . "config" . DS . "config.php");
@@ -264,6 +277,7 @@ class Core {
             } else {
                 $sql_handler = "system\\database\\MySQLDatabase";
             }
+            Logger::verbose("Connect to database for " . $usage . " (" . $data["user"] . "@" . $data["host"] . ")");
             $this->databases[$usage] = new $sql_handler($data["host"], $data["user"], $data["password"], $data["database"]);
         }
     }
