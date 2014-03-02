@@ -26,7 +26,7 @@ class ClassLoader {
      */
     public function __construct() {
         $this->directories = array();
-        $this->fileEnds = array("class.php", "php", "interface.php");
+        $this->fileEnds = array("class.php", "php", "interface.php", "plugin.php");
 
         spl_autoload_register(array($this, "load"));
     }

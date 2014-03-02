@@ -116,9 +116,13 @@ body {
 }
 
 #sidebar-middle .box-middle {
-    width: 368px;
+    width: 358px;
     height: 535px;
     background: url('main_middle.png') left top repeat-y;
+    color: #927e6c;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
 }
 
 #sidebar-middle .box-bottom {

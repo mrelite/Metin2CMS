@@ -32,3 +32,7 @@ $GENERAL["design"] = "default";
 
 // Servername
 $GENERAL["name"] = "ExampleMt2";
+
+// Metin2Base Plugin Configuration
+$PLUGINS["mt2base"]["load_type"] = "intern";     // Possible: intern, wbb
+$PLUGINS["mt2base"]["wbb_board_id"] = 1;        // Only needed if loadtype is wbb

@@ -48,6 +48,16 @@ class Core {
     private $smarty;
 
     /**
+     * @var array
+     */
+    private $plugins = array();
+
+    /**
+     * @var array
+     */
+    private $pagesOverwrite = array();
+
+    /**
      * @var Core
      */
     public static $instance;
@@ -78,6 +88,9 @@ class Core {
 
         // Setup Smarty
         $this->initSmarty();
+
+        // Initialize plugins
+        $this->initPlugins();
     }
 
     /**
@@ -91,7 +104,11 @@ class Core {
         $this->smarty->assign("config", $this->config);
 
         // Initialize page
-        $pageClassName = "\\system\\pages\\" . $this->getCurrentPage();
+        if(array_key_exists($this->getCurrentPage(), $this->pagesOverwrite)) {
+            $pageClassName = $this->pagesOverwrite[$this->getCurrentPage()];
+        } else {
+            $pageClassName = "\\system\\pages\\" . $this->getCurrentPage();
+        }
         Logger::verbose("Create a instance of " . $pageClassName);
         $page = new $pageClassName();
         if($page instanceof pages\Page) {
@@ -145,6 +162,32 @@ class Core {
             return $this->config["general_design"];
         }
         return "default";
+    }
+
+    /**
+     * Register a page
+     *
+     * @param $pages array
+     * @param $overwrite boolean
+     */
+    public function registerPages(array $pages, $overwrite) {
+        foreach($pages as $pagename => $file) {
+            if(array_key_exists($pagename, $this->pagesOverwrite) && !$overwrite) {
+                continue;
+            }
+            Logger::verbose("Overwrite " . $pagename . " with " . $file);
+            $this->pagesOverwrite[$pagename] = $file;
+        }
+    }
+
+    /**
+     * Get a config variable
+     *
+     * @param $config string config key
+     * @return mixed
+     */
+    public function getConfig($config) {
+        return $this->config[$config];
     }
 
     /**
@@ -214,6 +257,7 @@ class Core {
 
         $MySQL = array();
         $GENERAL = array();
+        $PLUGINS = array();
         $tmpMySQL = array();
         if(!file_exists(ROOT_DIR . "config" . DS . "config.php")) {
             Logger::error("config.php is missing, please copy config.example.php and change this");
@@ -223,6 +267,12 @@ class Core {
 
         foreach($GENERAL as $key => $value) {
             $this->config["general_" . $key] = $value;
+        }
+
+        foreach($PLUGINS as $key => $value) {
+            foreach($value as $key2 => $value2) {
+                $this->config["plugin_" . $key . "_" . $key2] = $value2;
+            }
         }
 
         foreach($MySQL as $usage => $data) {
@@ -286,6 +336,28 @@ class Core {
             }
             Logger::verbose("Connect to database for " . $usage . " (" . $data["user"] . "@" . $data["host"] . ")");
             $this->databases[$usage] = new $sql_handler($data["host"], $data["user"], $data["password"], $data["database"]);
+        }
+    }
+
+    /**
+     * Load all plugins
+     */
+    private function initPlugins() {
+        $handle = opendir(ROOT_DIR . "plugins" . DS);
+        while(false !== ($entry = readdir($handle))) {
+            if($entry != "." && $entry != "..") {
+                if(is_dir(ROOT_DIR . "plugins" . DS . $entry)) {
+                    // Load plugins
+                    if(file_exists(ROOT_DIR . "plugins" . DS . $entry . DS . $entry . ".plugin.php")) {
+                        $classname = "\\plugins\\" . $entry . "\\" . $entry;
+                        $obj = new $classname();
+                        $obj->onLoadByCore($this);
+                        $this->plugins[] = $obj;
+                    } else {
+                        throw new SystemException("Failed to load plugin " . $entry);
+                    }
+                }
+            }
         }
     }
 
