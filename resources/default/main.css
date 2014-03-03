@@ -89,9 +89,12 @@ body {
     position: relative;
     z-index: 3;
     background: url('box_middle.png') left top repeat-y;
-    min-height: 100px;
+    min-height: 80px;
     margin-top: -2px;
     margin-left: -2px;
+    color: #927e6c;
+    padding: 10px 20px 0px 15px;
+    font-size: 12px;
 }
 
 #sidebar-left .box .box-bottom, #sidebar-right .box .box-bottom {
@@ -164,4 +167,8 @@ body {
     font-size: 10px;
     display: block;
     font-weight: normal;
+}
+
+.serverstatus {
+    float: right;
 }

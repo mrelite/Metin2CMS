@@ -17,6 +17,9 @@
 
 namespace plugins\mt2base\pages;
 
+use plugins\mt2base\NewsHandler;
+use plugins\mt2base\ServerStatus;
+
 class Home implements \system\pages\Page {
 
     /**
@@ -38,9 +41,16 @@ class Home implements \system\pages\Page {
      */
     public function prepare($core, $smarty)
     {
-        $newsHandler = new \plugins\mt2base\NewsHandler();
+        $newsHandler = new NewsHandler();
         $news = $newsHandler->readNews(0, 10);
         $smarty->assign("news", $news);
+
+        // Get server status
+        $serverStatus = new ServerStatus();
+        $status = $serverStatus->getAllStatus();
+        $smarty->assign("useServerStatus", true);
+        $smarty->assign("status", $status);
+        $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
     }
 
 }

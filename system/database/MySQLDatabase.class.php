@@ -108,6 +108,50 @@ class MySQLDatabase {
     }
 
     /**
+     * Update a table
+     *
+     * @param $table string table name
+     * @param $fields array fields to update
+     * @param $values array values of fields to update
+     * @param string $where where clause
+     * @param bool $isIntern is query only intern (if true, no escaping)
+     */
+    public function update($table, $fields, $values, $where = "", $isIntern = false) {
+        $sql = "UPDATE `" . $table . "` SET ";
+        for($i = 0; $i < count($fields); $i++) {
+            if($values[$i] == "NOW()") {
+                $sql .= "`" . $fields[$i] . "`=" . $values[$i] . ", ";
+            } else {
+                if($isIntern) {
+                    $sql .= "`" . $fields[$i] . "`='" . $values[$i] . "', ";
+                } else {
+                    $sql .= "`" . $fields[$i] . "`='" . $this->escape($values[$i]) . "', ";
+                }
+            }
+        }
+        $sql = substr($sql, 0, -2);
+
+        // add where clause
+        if(!empty($where)) {
+            $sql .= " WHERE " . $where;
+        }
+
+        $this->query($sql);
+    }
+
+    /**
+     * Escapes special characters in a string for use in an SQL statement
+     *
+     * @param $string string
+     * @return string
+     *
+     * @see http://www.php.net/manual/en/mysqli.real-escape-string.php
+     */
+    public function escape($string) {
+        return $this->mysqli->real_escape_string($string);
+    }
+
+    /**
      * Run a sql query
      *
      * @param $sql string query
