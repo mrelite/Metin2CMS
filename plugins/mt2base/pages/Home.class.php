@@ -44,13 +44,6 @@ class Home implements \system\pages\Page {
         $newsHandler = new NewsHandler();
         $news = $newsHandler->readNews(0, 10);
         $smarty->assign("news", $news);
-
-        // Get server status
-        $serverStatus = new ServerStatus();
-        $status = $serverStatus->getAllStatus();
-        $smarty->assign("useServerStatus", true);
-        $smarty->assign("status", $status);
-        $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
     }
 
 }

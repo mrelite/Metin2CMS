@@ -58,6 +58,11 @@ class Core {
     private $pagesOverwrite = array();
 
     /**
+     * @var EventHandler
+     */
+    private $eventHandler;
+
+    /**
      * @var Core
      */
     public static $instance;
@@ -76,6 +81,9 @@ class Core {
 
         // Setup class loader
         $this->initClassLoader();
+
+        // Setup event handler
+        $this->initEventHandler();
 
         // Setup the logger
         $this->initLogger();
@@ -114,6 +122,7 @@ class Core {
         if($page instanceof pages\Page) {
             Logger::verbose("Prepare the page");
             $page->prepare($this, $this->smarty);
+            $this->eventHandler->triggerEvent("preparePage", $this, array($this->smarty));
 
             $this->smarty->assign("page_tpl", $page->getTemplateName());
 
@@ -206,6 +215,15 @@ class Core {
     }
 
     /**
+     * Get the event handler
+     *
+     * @return EventHandler
+     */
+    public function getEventHandler() {
+        return $this->eventHandler;
+    }
+
+    /**
      * Init all defines:
      *
      * DS - Short form of DIRECTORY_SEPARATOR
@@ -224,6 +242,13 @@ class Core {
         if(!defined("SYSTEM_DIR")) {
             define("SYSTEM_DIR", ROOT_DIR . "system" . DS);
         }
+    }
+
+    /**
+     * Init the event handler
+     */
+    public function initEventHandler() {
+        $this->eventHandler = new EventHandler();
     }
 
     /**

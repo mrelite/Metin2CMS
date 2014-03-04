@@ -26,6 +26,8 @@ class mt2base extends \system\Plugin {
      */
     public function __construct() {
         parent::__construct("Metin2 Base Functions", "1.0.0", ROOT_DIR . "plugins" . DS . "mt2base" . DS);
+
+        Core::$instance->getEventHandler()->addEvent("preparePage", array($this, "onPreparePage"));
     }
 
     /**
@@ -38,5 +40,14 @@ class mt2base extends \system\Plugin {
         $core->registerPages(array(
             "Home" => "plugins\\mt2base\\pages\\Home",
         ), true);
+    }
+
+    public function onPreparePage($core, $smarty) {
+        // Get server status
+        $serverStatus = new ServerStatus();
+        $status = $serverStatus->getAllStatus();
+        $smarty->assign("useServerStatus", true);
+        $smarty->assign("status", $status);
+        $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
     }
 }

@@ -3,3 +3,7 @@ config/config.php
 templates/compiled/
 log/
 exceptions/
+
+## Personal design (not public)
+templates/asura2/
+resources/asura2/
