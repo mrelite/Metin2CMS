@@ -63,6 +63,11 @@ class Core {
     private $eventHandler;
 
     /**
+     * @var array
+     */
+    private $navigationPoints = array();
+
+    /**
      * @var Core
      */
     public static $instance;
@@ -125,6 +130,7 @@ class Core {
             $this->eventHandler->triggerEvent("preparePage", $this, array($this->smarty));
 
             $this->smarty->assign("page_tpl", $page->getTemplateName());
+            $this->smarty->assign("navigation_points", $this->navigationPoints);
 
             Logger::verbose("Displaying template");
             $this->smarty->display("main.tpl");
@@ -186,6 +192,10 @@ class Core {
         }
 
         throw new SystemException("Unknown sql connection for " . $usage);
+    }
+
+    public function addNavigationPoint($name, $link) {
+        $this->navigationPoints[$name] = $link;
     }
 
     /**

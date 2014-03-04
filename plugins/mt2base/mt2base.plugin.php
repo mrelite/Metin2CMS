@@ -40,8 +40,20 @@ class mt2base extends \system\Plugin {
         $core->registerPages(array(
             "Home" => "plugins\\mt2base\\pages\\Home",
         ), true);
+
+        $core->addNavigationPoint("Startseite", "?p=Home");
+        $core->addNavigationPoint("Registrieren", "?p=Register");
+        $core->addNavigationPoint("Download", "?p=Download");
+        $core->addNavigationPoint("Community", "board/");
+        $core->addNavigationPoint("Rangliste", "?p=Rankings");
+        $core->addNavigationPoint("TeamSpeak3", "ts3server://");
+        $core->addNavigationPoint("Itemshop", "?p=ItemShop");
     }
 
+    /**
+     * @param $core
+     * @param $smarty
+     */
     public function onPreparePage($core, $smarty) {
         // Get server status
         $serverStatus = new ServerStatus();

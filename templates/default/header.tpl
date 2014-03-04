@@ -3,6 +3,7 @@
     <head>
         <title>{$config["general_name"]}</title>
         <link rel="stylesheet" type="text/css" href="{$resource_dir}main.css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
         <meta charset="utf-8">
     </head>
     <body>
