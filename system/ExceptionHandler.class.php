@@ -75,6 +75,8 @@ class ExceptionHandler {
 
         fwrite($file, $code);
         fclose($file);
+
+        Logger::close();
     }
 
     /**

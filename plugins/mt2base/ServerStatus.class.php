@@ -50,12 +50,16 @@ class ServerStatus {
 
     /**
      * Get the stats from every core / db / whatever
+     *
      * @return array
      */
     public function getAllStatus() {
         $sql = Core::$instance->getSql("homepage");
         $result = $sql->select("mt2base_serverstatus", array("name", "ip", "port", "last", "lastcheck"));
         foreach($result as $stat) {
+            if($stat["name"] == "const_player_count") {
+                continue;
+            }
             $timestamp = strtotime($stat["lastcheck"]);
             $isOnline = $stat["last"] == 1;
             if($timestamp + $this->refresh_interval < time()) {
@@ -69,6 +73,32 @@ class ServerStatus {
         }
 
         return $status;
+    }
+
+    /**
+     * Get the number of online players
+     *
+     * @return int
+     */
+    public function getPlayerOnline() {
+        if(Core::$instance->getConfig("plugin_mt2base_user_count_method") == "mysql") {
+            $sql = Core::$instance->getSql("homepage");
+            $result = $sql->select("mt2base_serverstatus", array('last', 'lastcheck'), '`name`="const_player_count"');
+            if(count($result) < 1) {
+                $count = Core::$instance->getSql('player')->selectCount('player', 'DATE_SUB(NOW(), INTERVAL 5 MINUTE) < last_play');
+                $sql->insert('mt2base_serverstatus', array('name', 'last', 'lastcheck'), array('const_player_count', $count, 'NOW()'));
+                return $count;
+            } else {
+                $timestamp = strtotime($result[0]['lastcheck']);
+                if($timestamp + $this->refresh_interval < time()) {
+                    $count = Core::$instance->getSql('player')->selectCount('player', 'DATE_SUB(NOW(), INTERVAL 5 MINUTE) < last_play');
+                    $sql->update('mt2base_serverstatus', array('last', 'lastcheck'), array($count, 'NOW()'), '`name`="const_player_count"');
+                    return $count;
+                }
+
+                return $result[0]['last'];
+            }
+        }
     }
 
     /**

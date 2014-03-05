@@ -38,3 +38,4 @@ $PLUGINS["mt2base"]["load_type"] = "intern";    // Possible: intern, wbb
 $PLUGINS["mt2base"]["wbb_board_id"] = 1;        // Only needed if loadtype is wbb
 $PLUGINS["mt2base"]["server_timeout"] = 0.5;     // Timeout after 0.5 seconds (for server status check)
 $PLUGINS["mt2base"]["refresh_interval"] = 5 * 60; // 5 * 60 seconds (5 Minutes)
+$PLUGINS["mt2base"]["user_count_method"] = "mysql"; // Use mysql query to calculate players online or api function

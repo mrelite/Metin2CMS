@@ -61,6 +61,7 @@ class mt2base extends \system\Plugin {
             $status = $serverStatus->getAllStatus();
             $smarty->assign("useServerStatus", true);
             $smarty->assign("status", $status);
+            $smarty->assign('player_online', $serverStatus->getPlayerOnline());
             $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
         }
     }

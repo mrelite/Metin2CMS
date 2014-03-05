@@ -136,6 +136,7 @@ class Core {
 
             $this->smarty->assign("page_tpl", $page->getTemplateName());
             $this->smarty->assign("navigation_points", $this->navigationPoints);
+            $this->smarty->assign('is_offline', $this->offline);
 
             Logger::verbose("Displaying template");
             $this->smarty->display("main.tpl");

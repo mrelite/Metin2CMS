@@ -113,6 +113,21 @@ class MySQLDatabase {
     }
 
     /**
+     * Get the count of rows in a table
+     *
+     * @param $table string
+     * @param $where string
+     * @return int
+     */
+    public function selectCount($table, $where) {
+        $sql = "SELECT COUNT(*) as count FROM `" . $table . "` WHERE " . $where;
+
+        $result = $this->query($sql);
+        $array = $this->createArray($result);
+        return $array[0]['count'];
+    }
+
+    /**
      * Update a table
      *
      * @param $table string table name
@@ -145,6 +160,34 @@ class MySQLDatabase {
     }
 
     /**
+     * Insert a row into a table
+     *
+     * @param $table string
+     * @param $fields array
+     * @param $values array
+     */
+    public function insert($table, $fields, $values) {
+        $sql = "INSERT INTO `" . $table . "`(";
+        foreach($fields as $field) {
+            $sql .= "`" . $field . "`, ";
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= ') VALUES(';
+
+        foreach($values as $value) {
+            if($value == 'NOW()') {
+                $sql .= "" . $value . ", ";
+            } else {
+                $sql .= "'" . $value . "', ";
+            }
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= ')';
+
+        $this->query($sql);
+    }
+
+    /**
      * Escapes special characters in a string for use in an SQL statement
      *
      * @param $string string
@@ -166,6 +209,7 @@ class MySQLDatabase {
     private function query($sql) {
         $result = $this->mysqli->query($sql);
         if($result === false) {
+            Logger::error("Query: " . $sql);
             throw new SQLException("SQL Error " . $this->mysqli->error);
         }
 
