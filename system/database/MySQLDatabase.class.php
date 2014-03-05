@@ -17,6 +17,8 @@
 
 namespace system\database;
 
+use system\Logger;
+
 class MySQLDatabase {
 
     /**
@@ -63,7 +65,10 @@ class MySQLDatabase {
 
         // Checking connection (No object style because of PHP bug in 5.2.9 and 5.3.0)
         if(mysqli_connect_error()) {
-            throw new SQLException("Connection to database " . $this->database . " failed");
+            Logger::error("Connecting to database " . $this->database . " failed");
+            Logger::verbose("Toggle offline modus");
+            \system\Core::$instance->setOfflineMode(true);
+            //throw new SQLException("Connection to database " . $this->database . " failed");
         }
     }
 

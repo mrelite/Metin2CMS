@@ -16,6 +16,7 @@
  */
 
 error_reporting(E_ERROR);
+ini_set("display_errors", 1);
 
 require("system" . DIRECTORY_SEPARATOR . "Core.class.php");
 

@@ -41,9 +41,18 @@ class Home implements \system\pages\Page {
      */
     public function prepare($core, $smarty)
     {
-        $newsHandler = new NewsHandler();
-        $news = $newsHandler->readNews(0, 10);
-        $smarty->assign("news", $news);
+        if(!$core->isOffline()) {
+            $newsHandler = new NewsHandler();
+            $news = $newsHandler->readNews(0, 10);
+            $smarty->assign("news", $news);
+        } else {
+            $smarty->assign("news", array(
+                array(
+                    "title" => "Offline-Modus",
+                    "content" => "Fehler beim Verbinden zum Server.<br />Seite befindet sich nun im Offline Modus."
+                )
+            ));
+        }
     }
 
 }

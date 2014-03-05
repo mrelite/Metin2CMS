@@ -68,6 +68,11 @@ class Core {
     private $navigationPoints = array();
 
     /**
+     * @var boolean
+     */
+    private $offline;
+
+    /**
      * @var Core
      */
     public static $instance;
@@ -192,6 +197,14 @@ class Core {
         }
 
         throw new SystemException("Unknown sql connection for " . $usage);
+    }
+
+    public function setOfflineMode($offline) {
+        $this->offline = $offline;
+    }
+
+    public function isOffline() {
+        return $this->offline;
     }
 
     public function addNavigationPoint($name, $link) {
@@ -384,8 +397,10 @@ class Core {
             } else {
                 $sql_handler = "system\\database\\MySQLDatabase";
             }
-            Logger::verbose("Connect to database for " . $usage . " (" . $data["user"] . "@" . $data["host"] . ")");
-            $this->databases[$usage] = new $sql_handler($data["host"], $data["user"], $data["password"], $data["database"]);
+            if(!$this->offline) {
+                Logger::verbose("Connect to database for " . $usage . " (" . $data["user"] . "@" . $data["host"] . ")");
+                $this->databases[$usage] = new $sql_handler($data["host"], $data["user"], $data["password"], $data["database"]);
+            }
         }
     }
 

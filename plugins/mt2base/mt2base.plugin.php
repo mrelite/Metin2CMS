@@ -55,11 +55,13 @@ class mt2base extends \system\Plugin {
      * @param $smarty
      */
     public function onPreparePage($core, $smarty) {
-        // Get server status
-        $serverStatus = new ServerStatus();
-        $status = $serverStatus->getAllStatus();
-        $smarty->assign("useServerStatus", true);
-        $smarty->assign("status", $status);
-        $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
+        if(!$core->isOffline()) {
+            // Get server status
+            $serverStatus = new ServerStatus();
+            $status = $serverStatus->getAllStatus();
+            $smarty->assign("useServerStatus", true);
+            $smarty->assign("status", $status);
+            $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
+        }
     }
 }
