@@ -98,14 +98,14 @@ class MySQLDatabase {
             $sql .= " WHERE " . $where;
         }
 
-        // add limit clause
-        if(!empty($limit)) {
-            $sql .= " LIMIT " . $limit;
-        }
-
         // add order clause
         if(!empty($order)) {
             $sql .= " ORDER BY " . $order;
+        }
+
+        // add limit clause
+        if(!empty($limit)) {
+            $sql .= " LIMIT " . $limit;
         }
 
         $result = $this->query($sql);
@@ -188,6 +188,17 @@ class MySQLDatabase {
     }
 
     /**
+     * Clear the complete table. Attention! For deleting single entries use delete.
+     *
+     * @param $table string
+     */
+    public function clear($table) {
+        $sql = 'DELETE FROM `' . $table . '`';
+
+        $this->query($sql);
+    }
+
+    /**
      * Escapes special characters in a string for use in an SQL statement
      *
      * @param $string string
@@ -206,7 +217,7 @@ class MySQLDatabase {
      * @return bool|\mysqli_result
      * @throws SQLException
      */
-    private function query($sql) {
+    public function query($sql) {
         $result = $this->mysqli->query($sql);
         if($result === false) {
             Logger::error("Query: " . $sql);
@@ -222,7 +233,7 @@ class MySQLDatabase {
      * @param $result \mysqli_result
      * @return array
      */
-    private function createArray($result) {
+    public function createArray($result) {
         $array = $result->fetch_all(MYSQL_BOTH);
         $result->free();
         return $array;

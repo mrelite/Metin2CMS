@@ -189,7 +189,7 @@ class Core {
      * Get a database connection for the usage
      *
      * @param $usage string
-     * @return MySQLDatabase
+     * @return database\MySQLDatabase
      * @throws SystemException
      */
     public function getSql($usage) {

@@ -136,7 +136,6 @@ body {
 
 #sidebar-middle .box-middle {
     width: 343px;
-    height: 535px;
     background: url('main_middle.png') left top repeat-y;
     color: #927e6c;
     padding-left: 15px;
@@ -166,6 +165,14 @@ body {
 
 .copyright a:hover {
     text-decoration: underline;
+}
+
+.fix-float {
+    clear: both;
+}
+
+table th {
+    text-align: left;
 }
 
 /* Plugins */

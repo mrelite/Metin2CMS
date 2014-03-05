@@ -2,6 +2,7 @@
                         <div class="box-bottom"></div>
                     </div>
                     {include file="sidebar_right.tpl"}
+                    <div class="fix-float"></div>
                 </div>
                 <div class="bottom"></div>
             </div>

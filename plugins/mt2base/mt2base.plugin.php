@@ -51,7 +51,7 @@ class mt2base extends \system\Plugin {
     }
 
     /**
-     * @param $core
+     * @param $core \system\Core
      * @param $smarty
      */
     public function onPreparePage($core, $smarty) {
@@ -63,6 +63,10 @@ class mt2base extends \system\Plugin {
             $smarty->assign("status", $status);
             $smarty->assign('player_online', $serverStatus->getPlayerOnline());
             $smarty->assign("status_refresh", date("H:i:s", $serverStatus->lastRefresh()));
+
+            // Top 10
+            $rankingsHelper = new RankingsHelper();
+            $smarty->assign('ranking_top', $rankingsHelper->getRankings($core->getConfig('plugin_mt2base_rankings_top_count')));
         }
     }
 }
