@@ -35,4 +35,28 @@ class Utils {
         return $randomString;
     }
 
+    /**
+     * Check if the string start with another string
+     *
+     * @param $haystack string
+     * @param $needle string
+     * @return bool
+     */
+    public static function startsWith($haystack, $needle)
+    {
+        return $needle === "" || strpos($haystack, $needle) === 0;
+    }
+
+    /**
+     * Check if the string end with another string
+     *
+     * @param $haystack string
+     * @param $needle string
+     * @return bool
+     */
+    public static function endsWith($haystack, $needle)
+    {
+        return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+    }
+
 }

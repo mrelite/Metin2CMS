@@ -107,6 +107,9 @@ class Core {
         // Setup Smarty
         $this->initSmarty();
 
+        // Setup Language
+        $this->initLanguage();
+
         // Initialize plugins
         $this->initPlugins();
     }
@@ -200,16 +203,47 @@ class Core {
         throw new SystemException("Unknown sql connection for " . $usage);
     }
 
+    /**
+     * Get the language from the browser or default language
+     * @return string
+     */
+    public function getLanguage() {
+        return Language::getLanguage();
+    }
+
+    /**
+     * Change the offline mode of the page
+     *
+     * @param $offline bool
+     */
     public function setOfflineMode($offline) {
         $this->offline = $offline;
     }
 
+    /**
+     * Is the page in offline mode?
+     *
+     * @return bool
+     */
     public function isOffline() {
         return $this->offline;
     }
 
+    /**
+     * Add a point to the navigation
+     * Will removed in the future
+     *
+     * @param $name string
+     * @param $link string
+     */
     public function addNavigationPoint($name, $link) {
-        $this->navigationPoints[$name] = $link;
+        // Try to translate
+        $translate = Language::translate('menu_' . $name);
+        if($translate == 'menu_' . $name) {
+            $this->navigationPoints[$name] = $link;
+        } else {
+            $this->navigationPoints[$translate] = $link;
+        }
     }
 
     /**
@@ -266,6 +300,40 @@ class Core {
         if(!defined("SYSTEM_DIR")) {
             define("SYSTEM_DIR", ROOT_DIR . "system" . DS);
         }
+    }
+
+    /**
+     * Init translator and select language
+     */
+    private function initLanguage() {
+        $availableLanguages = array();
+        if ($handle = opendir(ROOT_DIR . 'languages' . DS)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file != "." && $file != ".." && Utils::endsWith($file, '.lang')) {
+                    $availableLanguages[] = basename($file, '.lang');
+                }
+            }
+            closedir($handle);
+        }
+
+        $useLanguage = $this->getConfig('general_default_lang');
+
+        foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
+            $pattern = '/^(?P<primarytag>[a-zA-Z]{2,8})'.
+                '(?:-(?P<subtag>[a-zA-Z]{2,8}))?(?:(?:;q=)'.
+                '(?P<quantifier>\d\.\d))?$/';
+
+            $splits = array();
+
+            if (preg_match($pattern, $lang, $splits)) {
+                if(in_array($splits['primarytag'], $availableLanguages)) {
+                    $useLanguage = $splits['primarytag'];
+                    break;
+                }
+            }
+        }
+
+        Language::init($useLanguage);
     }
 
     /**

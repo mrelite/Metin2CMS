@@ -1,0 +1,24 @@
+language_name = "Deutsch (Du)"
+
+menu_home = "Startseite"
+menu_register = "Registrieren"
+menu_download = "Download"
+menu_community = "Community"
+menu_ranking = "Rangliste"
+menu_teamspeak3 = "TeamSpeak3"
+menu_itemshop = "ItemShop"
+
+serverstatus = "Server Status"
+serverstatus_player = "Spieler online"
+serverstatus_player_string = "Es sind %count% Spieler online"
+serverstatus_refresh = "Aktualisiert"
+serverstatus_online = "Online"
+serverstatus_offline = "Offline"
+
+news_written = "Geschrieben von %author%"
+
+ranking = "Rangliste"
+ranking_place = "Platz"
+ranking_level = "Level"
+ranking_name = "Name"
+ranking_empire = "Reich"

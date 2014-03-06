@@ -1,0 +1,24 @@
+language_name = "English"
+
+menu_home = "Home"
+menu_register = "Register"
+menu_download = "Download"
+menu_community = "Community"
+menu_ranking = "Rankings"
+menu_teamspeak3 = "TeamSpeak3"
+menu_itemshop = "ItemShop"
+
+serverstatus = "Server Status"
+serverstatus_player = "Player online"
+serverstatus_player_string = "There are %count% players online"
+serverstatus_refresh = "Updated"
+serverstatus_online = "Online"
+serverstatus_offline = "Offline"
+
+news_written = "Written by %author%"
+
+ranking = "Ranking"
+ranking_place = "Place"
+ranking_level = "Level"
+ranking_name = "Name"
+ranking_empire = "Empire"

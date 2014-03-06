@@ -30,6 +30,9 @@ $MySQL["player"]["database"] = "player_server_x";
 // Design directory name
 $GENERAL["design"] = "paragon2";
 
+// The default language (only used if browser language is not available)
+$GENERAL["default_lang"] = "en";
+
 // Servername
 $GENERAL["name"] = "ExampleMt2";
 

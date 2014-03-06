@@ -1,10 +1,10 @@
-<div class="left-header">Rangliste</div>
+<div class="left-header">{lang}ranking{/lang}</div>
 <div class="left-content">
     <table class="ranking-table">
         <tr>
-            <td><p class="ranking text">Level</p></td>
-            <td><p class="ranking text">Name</p></td>
-            <td><p class="ranking text">Reich</p></td>
+            <td><p class="ranking text">{lang}ranking_level{/lang}</p></td>
+            <td><p class="ranking text">{lang}ranking_name{/lang}</p></td>
+            <td><p class="ranking text">{lang}ranking_empire{/lang}</p></td>
         </tr>
         {foreach from=$ranking_top item=player}
             <tr>

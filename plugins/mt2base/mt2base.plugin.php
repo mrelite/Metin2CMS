@@ -18,6 +18,7 @@
 namespace plugins\mt2base;
 
 use system\Core;
+use system\Language;
 
 class mt2base extends \system\Plugin {
 
@@ -41,13 +42,13 @@ class mt2base extends \system\Plugin {
             "Home" => "plugins\\mt2base\\pages\\Home",
         ), true);
 
-        $core->addNavigationPoint("Startseite", "?p=Home");
-        $core->addNavigationPoint("Registrieren", "?p=Register");
-        $core->addNavigationPoint("Download", "?p=Download");
-        $core->addNavigationPoint("Community", "board/");
-        $core->addNavigationPoint("Rangliste", "?p=Rankings");
-        $core->addNavigationPoint("TeamSpeak3", "ts3server://");
-        $core->addNavigationPoint("Itemshop", "?p=ItemShop");
+        $core->addNavigationPoint('home', "?p=Home");
+        $core->addNavigationPoint('register', "?p=Register");
+        $core->addNavigationPoint("download", "?p=Download");
+        $core->addNavigationPoint("community", "board/");
+        $core->addNavigationPoint("ranking", "?p=Rankings");
+        $core->addNavigationPoint("teamspeak3", "ts3server://");
+        $core->addNavigationPoint("itemshop", "?p=ItemShop");
     }
 
     /**
