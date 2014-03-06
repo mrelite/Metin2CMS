@@ -28,7 +28,7 @@ $MySQL["player"]["database"] = "player_server_x";
 // $GENERAL["debug"] = true;
 
 // Design directory name
-$GENERAL["design"] = "default";
+$GENERAL["design"] = "paragon2";
 
 // Servername
 $GENERAL["name"] = "ExampleMt2";
