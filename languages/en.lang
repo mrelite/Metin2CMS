@@ -1,5 +1,9 @@
 language_name = "English"
 
+login = "Login"
+register = "Register"
+cancel = "Cancel"
+
 menu_home = "Home"
 menu_register = "Register"
 menu_download = "Download"
@@ -22,3 +26,8 @@ ranking_place = "Place"
 ranking_level = "Level"
 ranking_name = "Name"
 ranking_empire = "Empire"
+
+login_user = "Username"
+login_pwd = "Password"
+login_wronguser = "Username or Password wrong"
+login_banned = "You're banned"

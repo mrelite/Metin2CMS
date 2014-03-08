@@ -73,6 +73,11 @@ class Core {
     private $offline;
 
     /**
+     * @var Login
+     */
+    private $loginManager;
+
+    /**
      * @var Core
      */
     public static $instance;
@@ -85,6 +90,9 @@ class Core {
     public function __construct() {
         // Set this instance
         Core::$instance = $this;
+
+        // Start session
+        session_start();
 
         // Initialize defines
         $this->initDefines();
@@ -118,6 +126,21 @@ class Core {
      * Handle user input and display the template
      */
     public function view() {
+        if($this->loginManager != null) {
+            // Doing login functions
+            $isLogin = $this->loginManager->isLogin($this);
+            if(!$isLogin) {
+                $success = $this->loginManager->tryLogin($this);
+            }
+        }
+
+        if($success == -1) {
+            $this->smarty->assign('login_error', Language::translate('login_wronguser'));
+        }
+        if($success == -2) {
+            $this->smarty->assign('login_error', Language::translate('login_banned'));
+        }
+
         // Define design related variables
         $this->smarty->assign("resource_dir", "resources/" . $this->getDesign() . "/");
 
@@ -140,12 +163,17 @@ class Core {
             $this->smarty->assign("page_tpl", $page->getTemplateName());
             $this->smarty->assign("navigation_points", $this->navigationPoints);
             $this->smarty->assign('is_offline', $this->offline);
+            if($this->loginManager != null) {
+                $this->smarty->assign('user', $this->loginManager->getCurrentUser());
+            }
 
             Logger::verbose("Displaying template");
             $this->smarty->display("main.tpl");
         } else {
             throw new SystemException("Error in page " . $this->getCurrentPage() . "! The class must be an instanceof Page");
         }
+
+        $this->eventHandler->triggerEvent('endScript', $this);
 
         Logger::close();
     }
@@ -279,6 +307,24 @@ class Core {
      */
     public function getEventHandler() {
         return $this->eventHandler;
+    }
+
+    /**
+     * Return the current login manager (by default no is set)
+     *
+     * @return Login
+     */
+    public function getLoginManager() {
+        return $this->loginManager;
+    }
+
+    /**
+     * Set the login manager (by default no is set)
+     *
+     * @param $loginManager Login
+     */
+    public function setLoginManager($loginManager) {
+        $this->loginManager = $loginManager;
     }
 
     /**

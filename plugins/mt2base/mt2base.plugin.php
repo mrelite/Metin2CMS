@@ -29,6 +29,7 @@ class mt2base extends \system\Plugin {
         parent::__construct("Metin2 Base Functions", "1.0.0", ROOT_DIR . "plugins" . DS . "mt2base" . DS);
 
         Core::$instance->getEventHandler()->addEvent("preparePage", array($this, "onPreparePage"));
+        Core::$instance->getEventHandler()->addEvent("endScript", array($this, "onEndScript"));
     }
 
     /**
@@ -49,6 +50,8 @@ class mt2base extends \system\Plugin {
         $core->addNavigationPoint("ranking", "?p=Rankings");
         $core->addNavigationPoint("teamspeak3", "ts3server://");
         $core->addNavigationPoint("itemshop", "?p=ItemShop");
+
+        $core->setLoginManager(new Login());
     }
 
     /**
@@ -68,6 +71,18 @@ class mt2base extends \system\Plugin {
             // Top 10
             $rankingsHelper = new RankingsHelper();
             $smarty->assign('ranking_top', $rankingsHelper->getRankings($core->getConfig('plugin_mt2base_rankings_top_count')));
+        }
+    }
+
+    /**
+     * Automatically called by core when the scripts end
+     *
+     * @param $core Core
+     */
+    public function onEndScript($core) {
+        $user = $core->getLoginManager()->getCurrentUser();
+        if($user instanceof User) {
+            $user->save();
         }
     }
 }

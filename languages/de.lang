@@ -1,5 +1,9 @@
 language_name = "Deutsch (Du)"
 
+login = "Einloggen"
+register = "Registrieren"
+cancel = "Abbrechen"
+
 menu_home = "Startseite"
 menu_register = "Registrieren"
 menu_download = "Download"
@@ -22,3 +26,8 @@ ranking_place = "Platz"
 ranking_level = "Level"
 ranking_name = "Name"
 ranking_empire = "Reich"
+
+login_user = "Benutzername"
+login_pwd = "Passwort"
+login_wronguser = "Benutzername oder Passwort falsch"
+login_banned = "Dein Account ist gesperrt"
