@@ -14,7 +14,7 @@
     </div>
 
     <div id="login">
-        <form action="index.php" method="get">
+        <form action="index.php" method="post">
             <input name="login_user" id="user" type="text" />
             <input name="login_pwd" id="pass" type="password" />
             <input id="button-login" type="submit" value="" />
