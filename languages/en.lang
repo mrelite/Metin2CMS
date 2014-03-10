@@ -31,3 +31,5 @@ login_user = "Username"
 login_pwd = "Password"
 login_wronguser = "Username or Password wrong"
 login_banned = "You're banned"
+
+user_loggedinas = "Logged in as %login%"

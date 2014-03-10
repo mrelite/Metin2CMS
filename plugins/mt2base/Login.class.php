@@ -68,6 +68,8 @@ class Login extends \system\Login {
      */
     public function isLogin($core)
     {
+        if($core->isOffline())
+            return false;
         if(!empty($_SESSION['login']) && !empty($_SESSION['id']) && !empty($_SESSION['salt'])) {
             $account_sql = $core->getSql('account');
             $result = $account_sql->select('account', array('login', 'id', 'password', 'status', 'availDt'), '`id`="' . $_SESSION['id'] . '"');
