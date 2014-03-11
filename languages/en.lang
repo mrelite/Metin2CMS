@@ -33,3 +33,11 @@ login_wronguser = "Username or Password wrong"
 login_banned = "You're banned"
 
 user_loggedinas = "Logged in as %login%"
+
+register_login = "Username"
+register_pwd = "Password"
+register_pwd_repeat = "Password repeat"
+register_email = "Email"
+register_email_repeat = "Email repeat"
+register_delete_code = "Delete code"
+register_info = "All fields marked with * are required.<br /><br /><b style='color: red;'>ATTENTION: Use no account data from other servers or account details that you have already used!</b>"

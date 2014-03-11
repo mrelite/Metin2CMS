@@ -41,6 +41,7 @@ class mt2base extends \system\Plugin {
     {
         $core->registerPages(array(
             "Home" => "plugins\\mt2base\\pages\\Home",
+            "Register" => "plugins\\mt2base\\pages\\Register"
         ), true);
 
         $core->addNavigationPoint('home', "?p=Home");

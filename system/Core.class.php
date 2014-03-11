@@ -193,8 +193,8 @@ class Core {
      * @return string
      */
     public function getCurrentPage() {
-        if(array_key_exists($_GET, "p") && !empty($_GET["p"])) {
-            if(file_exists(SYSTEM_DIR . "pages" . DS . $_GET["p"] . ".class.php")) {
+        if(array_key_exists("p", $_GET) && !empty($_GET["p"])) {
+            if(file_exists(SYSTEM_DIR . "pages" . DS . $_GET["p"] . ".class.php") || array_key_exists($_GET["p"], $this->pagesOverwrite)) {
                 return $_GET["p"];
             } else {
                 Logger::warning("Unknown page " . $_GET["p"]);
