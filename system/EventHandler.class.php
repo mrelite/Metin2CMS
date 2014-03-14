@@ -47,7 +47,7 @@ class EventHandler {
     }
 
     /**
-     * Trigger all events releated to a name
+     * Trigger all events related to a name
      *
      * @param $event_name string
      * @param $obj_subject object
@@ -55,7 +55,7 @@ class EventHandler {
      * @throws SystemException
      */
     public function triggerEvent($event_name, $obj_subject = null, array $event_params = null) {
-        Logger::verbose('EventHandler::trigerEvent called. Checking if event_name is valid');
+        Logger::verbose('EventHandler::triggerEvent called. Checking if event_name is valid');
         if(is_string($event_name)) {
             Logger::verbose('Trigger event ' . $event_name);
             if(isset($this->events[$event_name])) {
