@@ -18,6 +18,7 @@
 namespace system\database;
 
 use system\Logger;
+use system\Utils;
 
 class MySQLDatabase {
 
@@ -177,8 +178,10 @@ class MySQLDatabase {
         foreach($values as $value) {
             if($value == 'NOW()') {
                 $sql .= "" . $value . ", ";
+            } elseif(Utils::startsWith($value, 'PASSWORD(')) {
+                $sql .= "" . $value . ", ";
             } else {
-                $sql .= "'" . $value . "', ";
+                $sql .= "'" . $this->escape($value) . "', ";
             }
         }
         $sql = substr($sql, 0, -2);
@@ -237,6 +240,16 @@ class MySQLDatabase {
         $array = $result->fetch_all(MYSQL_BOTH);
         $result->free();
         return $array;
+    }
+
+    /**
+     * Returns the auto generated id used in the last query
+     *
+     * @return mixed
+     * @see http://nl3.php.net/manual/en/mysqli.insert-id.php
+     */
+    public function lastInsertId() {
+        return $this->mysqli->insert_id;
     }
 
 }

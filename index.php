@@ -15,7 +15,8 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ERROR);
+//error_reporting(E_ERROR);         // for production
+error_reporting(E_ALL ^ E_NOTICE);  // for developing
 ini_set("display_errors", 1);
 
 require("system" . DIRECTORY_SEPARATOR . "Core.class.php");

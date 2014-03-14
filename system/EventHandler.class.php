@@ -55,10 +55,14 @@ class EventHandler {
      * @throws SystemException
      */
     public function triggerEvent($event_name, $obj_subject = null, array $event_params = null) {
+        Logger::verbose('EventHandler::trigerEvent called. Checking if event_name is valid');
         if(is_string($event_name)) {
+            Logger::verbose('Trigger event ' . $event_name);
             if(isset($this->events[$event_name])) {
+                Logger::verbose('Event exists');
                 array_unshift($event_params, $obj_subject);
                 foreach($this->events[$event_name] as $callback) {
+                    Logger::verbose('Call event (' . $callback . ')');
                     if(!is_callable($callback)) {
                         throw new SystemException("Invalid callback (should never thrown)");
                     }

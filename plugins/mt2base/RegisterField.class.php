@@ -105,8 +105,13 @@ class RegisterField {
             return false;
 
         // Check for pattern
+        if(empty($this->pattern))
+            return true;
+
         if(!preg_match($this->pattern, $value))
             return false;
+
+        return true;
     }
 
 }
