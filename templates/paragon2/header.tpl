@@ -14,13 +14,20 @@
     </div>
 
     <div id="login">
-        <form action="index.php" method="post">
-            <input name="login_user" id="user" type="text" />
-            <input name="login_pwd" id="pass" type="password" />
-            <input id="button-login" type="submit" value="" />
-        </form>
+        {if !$user}
+            <form method="post">
+                <input name="login_user" id="user" type="text" />
+                <input name="login_pwd" id="pass" type="password" />
+                <input id="button-login" type="submit" value="" />
+            </form>
+            {if !$login_error}
+                <b style="color: red;">{$login_error}</b>
+            {/if}
+        {else}
+            <p>{lang login=$user->getLogin()}user_loggedinas{/lang}</p>
+        {/if}
     </div>
-
+    
     {include file='navigation.tpl'}
 
     <div id="vote">

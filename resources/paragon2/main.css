@@ -38,6 +38,11 @@ body{
 	height: 55px;
     background: url(login-bg.jpg) repeat-x left top;
     padding: 10px 10px 10px 300px;
+    line-height: 30px;
+}
+
+#login p {
+	vertical-align: middle;
 }
 
 .brand{
