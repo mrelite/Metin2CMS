@@ -17,6 +17,9 @@
 
 namespace plugins\mt2base;
 
+use system\core;
+use system\SystemException;
+
 class RegisterField {
 
     /**
@@ -95,11 +98,38 @@ class RegisterField {
     public function isRequired() { return $this->required; }
 
     /**
+     * Get the captcha html code
+     * @return string
+     */
+    public function getCaptchaHtml() {
+        if($this->type != 'captcha')
+            throw new SystemException("Tried to get captcha html of an non captcha field.");
+
+        if(!Core::$instance->getConfig("general_recaptcha_enable")) 
+            throw new SystemException("Recaptcha isn't enabled. Please activate it or wait for other captchas");
+
+        return recaptcha_get_html(Core::$instance->getConfig("general_recaptcha_pubkey"));
+    }
+
+    /**
      * Check if the value is valid for this field
      * @param $value string
      * @return bool
      */
     public function isValid($value) {
+        // Is Captcha?
+        if($this->type == 'captcha') {
+            if(Core::$instance->getConfig("general_recaptcha_enable")) {
+                $result = recaptcha_check_answer(Core::$instance->getConfig("general_recaptcha_privkey"), 
+                    $_SERVER["REMOTE_ADDR"], 
+                    $_POST["recaptcha_challenge_field"], 
+                    $_POST["recaptcha_response_field"]);
+                return $result->is_valid;
+            } else {
+                throw new SystemException("Recaptcha isn't enabled. Please activate it or wait for other captchas");
+            }
+        }
+
         // Check for empty
         if(empty($value) && $this->required)
             return false;

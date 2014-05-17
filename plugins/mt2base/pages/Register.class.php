@@ -37,6 +37,7 @@ class Register implements Page {
         Register::$fields[] = new RegisterField('email', 'text', Language::translate('register_email'), '/^[\w][\w-.]+@[\w-.]+\.[a-z]{2,4}$/U', true);
         Register::$fields[] = new RegisterField('email_repeat', 'text', Language::translate('register_email_repeat'), '', true);
         Register::$fields[] = new RegisterField('delete_code', 'text', Language::translate('register_delete_code'), '/^([a-zA-Z0-9]{4,16})$/', true);
+        Register::$fields[] = new RegisterField('captcha', 'captcha', Language::translate('register_captcha'), '', true);
 
         // For adding fields with plugins
         Core::$instance->getEventHandler()->triggerEvent('create_register_dialog', $this);
@@ -62,7 +63,7 @@ class Register implements Page {
     public function prepare($core, $smarty)
     {
         // Check for register request
-        if(!empty($_POST['do_register']) && $_POST['do_register'] == 1) {
+        if(!$core->getLoginManager()->isLogin($core) && !empty($_POST['do_register']) && $_POST['do_register'] == 1) {
             $success = true;
             $errors = array();
             foreach(Register::$fields as $field) {

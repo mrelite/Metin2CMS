@@ -41,18 +41,23 @@ class mt2base extends \system\Plugin {
     {
         $core->registerPages(array(
             "Home" => "plugins\\mt2base\\pages\\Home",
-            "Register" => "plugins\\mt2base\\pages\\Register"
+            "Register" => "plugins\\mt2base\\pages\\Register",
+            "Panel" => "plugins\\mt2base\\pages\\Panel",
         ), true);
 
+        $core->setLoginManager(new Login());
+
         $core->addNavigationPoint('home', "?p=Home");
-        $core->addNavigationPoint('register', "?p=Register");
+        if($core->getLoginManager()->isLogin($core)) {
+            $core->addNavigationPoint('loginpanel', "?p=Panel");
+        } else {
+            $core->addNavigationPoint('register', "?p=Register");
+        }
         $core->addNavigationPoint("download", "?p=Download");
         $core->addNavigationPoint("community", "board/");
         $core->addNavigationPoint("ranking", "?p=Rankings");
         $core->addNavigationPoint("teamspeak3", "ts3server://");
         $core->addNavigationPoint("itemshop", "?p=ItemShop");
-
-        $core->setLoginManager(new Login());
     }
 
     /**

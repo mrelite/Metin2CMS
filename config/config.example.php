@@ -36,6 +36,11 @@ $GENERAL["default_lang"] = "en";
 // Servername
 $GENERAL["name"] = "ExampleMt2";
 
+// ReCAPTCHA
+$GENERAL["recaptcha_enable"] = true;  						// Should recaptcha use?
+$GENERAL["recaptcha_pubkey"] = "";							// Insert your publickey here
+$GENERAL["recaptcha_privkey"] = "";							// Insert your privatekey here
+
 // Metin2Base Plugin Configuration
 $PLUGINS["mt2base"]["load_type"] = "intern";                // Possible: intern, wbb
 $PLUGINS["mt2base"]["wbb_board_id"] = 1;                    // Only needed if loadtype is wbb

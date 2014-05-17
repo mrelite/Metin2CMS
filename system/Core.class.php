@@ -112,6 +112,9 @@ class Core {
         // Loading configuration
         $this->loadConfig();
 
+        // Setup recaptcha
+        $this->initRecaptcha();
+
         // Setup Smarty
         $this->initSmarty();
 
@@ -407,6 +410,15 @@ class Core {
         $this->smarty->setCompileDir(ROOT_DIR . "templates" . DS . "compiled" . DS);
         $this->smarty->debugging = $this->isDebug();
         $this->smarty->caching = false;
+    }
+
+    /**
+     * Initialize reCAPTCHA from Google
+     */
+    private function initRecaptcha() {
+        if($this->config["general_recaptcha_enable"]) {
+            require(ROOT_DIR . "libs" . DS . "recaptcha" . DS . "recaptchalib.php");
+        }
     }
 
     /**
