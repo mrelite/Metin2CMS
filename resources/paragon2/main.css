@@ -55,22 +55,27 @@ body{
     background: black url(user.png);
     width: 116px;
 	height: 36px;
-	border: none;
+	border: 0px solid black;
 	padding-left: 50px;
 	padding-right: 10px;
 	color: #444444;
 	margin: 0px;
+    position:absolute;
+    top:9px;
 }
 
 #pass{
     background: black url(pass.png);
     width: 116px;
 	height: 36px;
-	border: none;
+	border: 0px solid black;
 	padding-left: 50px;
 	padding-right: 10px;
 	color: #444444;
 	margin: 0px;
+    position:absolute;
+    top:9px;
+    left: 480px;
 }
 
 #button-login{
@@ -81,6 +86,9 @@ body{
 	padding-left: 50px;
 	padding-right: 10px;
 	color: #444444;
+    position:absolute;
+    top:9px;
+    left: 660px;
 }
 
 #button-login:hover{
@@ -248,6 +256,10 @@ body{
 	color: #646464;
 	text-align: center;
 	font-weight: bold;
+}
+
+.right-header:first-child {
+    margin-top: 0px;
 }
 
 .right-content{
