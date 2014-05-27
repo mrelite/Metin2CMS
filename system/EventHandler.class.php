@@ -55,6 +55,10 @@ class EventHandler {
      * @throws SystemException
      */
     public function triggerEvent($event_name, $obj_subject = null, array $event_params = null) {
+        if($event_params == null) {
+            $event_params = array();   
+        }
+        
         Logger::verbose('EventHandler::triggerEvent called. Checking if event_name is valid');
         if(is_string($event_name)) {
             Logger::verbose('Trigger event ' . $event_name);
