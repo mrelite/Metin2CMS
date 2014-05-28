@@ -88,3 +88,30 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program;
 if not, see <http://www.gnu.org/licenses/>.
 ```
+
+Metin2CMS (Español)
+=========
+Este es un poderoso Framework para Servidores Privados de Metin2.
+Está diseñado para ser estable y utilizar pocos recursos mientras muchos usuarios visitan la página.
+
+Características:
+* Administrar fácilmente a los jugadores mediante un sencillo panel de administración.
+* Seguro y libre de usar gracias a su código abierto.
+* Actualizaciones Constantes
+
+Licencia:
+```
+Metin2CMS - Easy for Metin2
+Copyright © 2014  ChuckNorris
+ 
+Este programa es software libre: Puedes redistribuirlo y/o modificarlo bajo los términos de
+la Licencia Pública General GNU publicada por la Fundación para el Software Libre.
+Cualquiera de las 2, la licencia de la versión 3 o cualquier versión posterior.
+ 
+Este programa se distribuye con la esperanza de que sea útil, pero SIN NINGUNA GARANTÍA;
+Ni siquiera la garantía implícita de COMERCIALIZACIÓN o IDONEIDAD PARA UN PROPÓSITO PARTICULAR.
+Para más detalles consulte la Licencia Pública General de GNU.
+ 
+Deberías haber recibido una copia de la Licencia Pública General de GNU junto con este programa;
+Si no, véase <http://www.gnu.org/licenses/>.
+```
